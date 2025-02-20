@@ -25,6 +25,7 @@ def polygonize(iter_pairs=None, region=None ,iprint=False):
 
     def loop_wrapper(args):
         dx, gridix = args
+
         poissd = pickle.load(open(f'voronoi_grids/{dx}/{str(gridix).zfill(2)}.p', 'rb'))['poissd']
         
         # set up SphericalVoronoi
@@ -57,6 +58,16 @@ def polygonize(iter_pairs=None, region=None ,iprint=False):
             else:
                 lat_bounds = (-19.7,53.5)
                 lng_bounds = (-37,40)
+        elif region=="somalia":
+            if dx<=28:
+                lat_bounds = (-35,45)
+                lng_bounds = (10,90)
+            elif dx<=57:
+                lat_bounds = (-5,15)
+                lng_bounds = (40,52)
+            else:
+                lat_bounds = (-5,15)
+                lng_bounds = (40,52)
         elif region=="mexico":
             if dx<=28:
                 lat_bounds = (-125,-75)
@@ -131,9 +142,9 @@ def polygonize(iter_pairs=None, region=None ,iprint=False):
         if iprint: print("Done finding neighbors.")
 
         # correct errors
-        polygons, n_inconsis = check_voronoi_tiles(polygons)
+        polygons, n_inconsis = check_voronoi_tiles(polygons, iprint=iprint)
         if iprint: print("Done checking neighbors.")
-        check_overlap(polygons, region=region)
+        check_overlap(polygons, region=region, iprint=iprint)
         if iprint: print("Done checking overlap.")
 
         # save
@@ -141,9 +152,9 @@ def polygonize(iter_pairs=None, region=None ,iprint=False):
         with open(f'voronoi_grids/{dx}/borders_ix{str(gridix).zfill(2)}.p', 'wb') as f:
             pickle.dump({'selectix':selectix}, f)
             
-    if iter_pairs is None:
-        # iterate over all preset combinations of dx and dt
-        iter_pairs = product([40, 80, 160, 320, 640, 1280], range(10))
+    # if iter_pairs is None: ## Not needed now
+    #     # iterate over all preset combinations of dx and dt
+    #     iter_pairs = product([40, 80, 160, 320, 640, 1280], range(10))
 
     with mp.Pool() as pool:
         pool.map(loop_wrapper, iter_pairs)

@@ -21,7 +21,8 @@ from voronoi_globe import *
 ### Here width and height are the bounds for geenrating random points (see PoissonDiscSphere class's __init__ method)
 ### Larger region will significantly slow down the code. So adjusting for region of interest is recommended.
 
-region = "latin_america"
+region = "africa"
+iprint = True
 
 if(region=="africa"):
     WIDTH = (0.05235987755982988, 1.6406094968746698)
@@ -47,6 +48,13 @@ elif(region=="india"):
 
     LARGEWIDTH = (1.1, 3)
     LARGEHEIGHT = (-0.5, 1.5)
+elif(region=="somalia"): ## Doesn't work yet! Needs debugging.
+    WIDTH = (1, 1.6)
+    HEIGHT = (-0.3, 0.5)
+
+    LARGEWIDTH = (0.1, 2.5)
+    LARGEHEIGHT = (-0.9, 0.8)
+
 else: ## whole globe (latlog bounds and overlap not set yet)
     WIDTH = (0, 2*pi-0.01)
     HEIGHT = (-pi/2, (pi/2)-0.01)
@@ -113,6 +121,6 @@ if __name__=='__main__':
     print("Done.")
     
     print("Drawing boundaries around Voronoi cells...")
-    polygonize(product([int(i) for i in os.listdir('./voronoi_grids')], gridix), region=region ,iprint=False)
+    polygonize(product([int(i) for i in os.listdir('./voronoi_grids')], gridix), region=region ,iprint=iprint)
     print("Done.")
 
