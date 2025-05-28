@@ -2,7 +2,8 @@
 # Interface functions.
 # Author: Eddie Lee, edlee@csh.ac.at
 # ====================================================================================== #
-from fiona.errors import DriverError
+# from fiona.errors import DriverError
+from warnings import warn
 
 from .utils import *
 
@@ -45,7 +46,9 @@ def load_voronoi(dx, gridix=0, prefix='.', exclude_boundary=False, exclude_cente
             contained_ix = [not af['geometry'].iloc[0].contains(p.buffer(1))
                             for p in gdf['geometry'].values]
             gdf = gdf.loc[contained_ix]
-    except DriverError:
+    # except DriverError:
+    #     warn("Africa shapefile cannot be found. Boundary filtering not done.")
+    except FileNotFoundError:
         warn("Africa shapefile cannot be found. Boundary filtering not done.")
     return gdf
 
