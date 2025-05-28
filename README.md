@@ -17,5 +17,5 @@ $ rm -rf voronoi_globe
 # Use
 ```bash
 $ cp scripts/create_vcells.py .
-$ python create_vcells.py 0
+$ python3 create_vcells.py 0
 ```
