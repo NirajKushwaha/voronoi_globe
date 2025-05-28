@@ -26,7 +26,7 @@ def polygonize(iter_pairs=None, region=None ,iprint=False):
     def loop_wrapper(args):
         dx, gridix = args
 
-        poissd = pickle.load(open(f'voronoi_grids/{dx}/{str(gridix).zfill(2)}.p', 'rb'))['poissd']
+        poissd = pickle.load(open(f'voronoi_grids_{region}/{dx}/{str(gridix).zfill(2)}.p', 'rb'))['poissd']
         
         # set up SphericalVoronoi
         xy = poissd.samples.copy()
@@ -148,8 +148,8 @@ def polygonize(iter_pairs=None, region=None ,iprint=False):
         if iprint: print("Done checking overlap.")
 
         # save
-        polygons.to_file(f'voronoi_grids/{dx}/borders{str(gridix).zfill(2)}.shp')
-        with open(f'voronoi_grids/{dx}/borders_ix{str(gridix).zfill(2)}.p', 'wb') as f:
+        polygons.to_file(f'voronoi_grids_{region}/{dx}/borders{str(gridix).zfill(2)}.shp')
+        with open(f'voronoi_grids_{region}/{dx}/borders_ix{str(gridix).zfill(2)}.p', 'wb') as f:
             pickle.dump({'selectix':selectix}, f)
             
     # if iter_pairs is None: ## Not needed now

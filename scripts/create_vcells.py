@@ -63,7 +63,7 @@ else: ## whole globe (latlog bounds and overlap not set yet)
     LARGEHEIGHT = (-pi/2, (pi/2)-0.01)
 
 
-def create_one_grid(gridix, dx):
+def create_one_grid(gridix, dx, region):
     assert 100>=gridix>=0
     assert dx in [20,40,80,160,320,640,1280,28,57,113,226,453,905]
 
@@ -74,12 +74,12 @@ def create_one_grid(gridix, dx):
                                    height_bds=LARGEHEIGHT)
     else:
         # load coarse grid that will be used to group cells in finer grid
-        fname = f'voronoi_grids/{dx//2}/{str(gridix).zfill(2)}.p'
+        fname = f'voronoi_grids_{region}/{dx//2}/{str(gridix).zfill(2)}.p'
         if not os.path.isfile(fname):
             # try to find something close to a factor of 2
-            for i in os.listdir('voronoi_grids'):
+            for i in os.listdir(f'voronoi_grids_{region}'):
                 if abs((int(i)-dx//2)) <= dx/2*.02:
-                    fname = f'voronoi_grids/{i}/{str(gridix).zfill(2)}.p'
+                    fname = f'voronoi_grids_{region}/{i}/{str(gridix).zfill(2)}.p'
         poissd = pickle.load(open(fname,'rb'))['poissd']
         coarsegrid = poissd.samples
 
@@ -91,7 +91,7 @@ def create_one_grid(gridix, dx):
                                    k_coarse=15)
     poissd.sample()
 
-    fname = f'voronoi_grids/{dx}/{str(gridix).zfill(2)}.p'
+    fname = f'voronoi_grids_{region}/{dx}/{str(gridix).zfill(2)}.p'
     if os.path.isfile(fname):
         warn("Overwriting existing file.")
     save_pickle(['poissd'], fname, True)
@@ -102,12 +102,13 @@ def main(gridix):
     nested chain.
     """
     for dx in [20,40,80,160,320,640,1280,28,57,113,226,453,905]:
+    # for dx in [20,40,80,160]:
         try:
-            os.makedirs(f'./voronoi_grids/{dx}')
+            os.makedirs(f'./voronoi_grids_{region}/{dx}')
         except OSError:
             pass
 
-        create_one_grid(gridix, dx)
+        create_one_grid(gridix, dx, region)
         print(f"Done with grid {gridix} and dx {dx}.\n")
 
 if __name__=='__main__':
@@ -121,6 +122,6 @@ if __name__=='__main__':
     print("Done.")
     
     print("Drawing boundaries around Voronoi cells...")
-    polygonize(product([int(i) for i in os.listdir('./voronoi_grids')], gridix), region=region ,iprint=iprint)
+    polygonize(product([int(i) for i in os.listdir(f'./voronoi_grids_{region}')], gridix), region=region ,iprint=iprint)
     print("Done.")
 
