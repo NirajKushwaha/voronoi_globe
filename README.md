@@ -6,7 +6,7 @@ Package for tiling patches of globe with Voronoi tiles.
 $ git clone https://github.com/NirajKushwaha/voronoi_globe.git
 $ cd voronoi_globe
 $ git clone https://github.com/eltrompetero/workspace.git
-$ python setup.py bdist_wheel
+$ python3 setup.py bdist_wheel
 $ pip install dist/*
 ```
 
