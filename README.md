@@ -11,11 +11,11 @@ $ python3 setup.py bdist_wheel
 $ pip install dist/*
 
 $ cd ..
+$ cp voronoi_globe/scripts/create_vcells.py .
 $ rm -rf voronoi_globe
 ```
 
 # Use
 ```bash
-$ cp scripts/create_vcells.py .
 $ python3 create_vcells.py 0
 ```
