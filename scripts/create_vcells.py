@@ -1,6 +1,6 @@
 # ====================================================================================== #
 # Code for producing a random Voronoi cell grid across the African continent.
-# Author : Eddie Lee, edlee@csh.ac.at
+# Author : Eddie Lee, Niraj Kushwaha
 # ====================================================================================== #
 import sys
 import os
